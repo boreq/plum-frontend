@@ -5,7 +5,7 @@ import { RangeData } from './Data';
 import axios from 'axios'; // do not add { }, some webshit bs?
 import { AxiosResponse } from 'axios';
 
-export class ApiResource {
+export class ApiService {
 
     private toTimePoint(dateTime: DateTime): TimePoint {
         return {

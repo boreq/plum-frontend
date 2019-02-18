@@ -8,7 +8,6 @@
     import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
     import { TimePeriod } from '@/services/TimePeriod';
     import { timePointAsString } from '@/services/TimePoint';
-    import { ApiResource } from '@/services/ApiResource';
     import { RangeData } from '@/services/Data';
     import { DataService } from '@/services/DataService';
     import { ChartColors } from '@/services/ChartColors';
