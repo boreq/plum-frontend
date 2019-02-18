@@ -6,12 +6,9 @@ export class DataService {
         let sum = 0;
         for (let uri in data.by_uri) {
             let byUriData = data.by_uri[uri];
-            for (let method in byUriData.by_method) {
-                let byMethodData = byUriData.by_method[method];
-                for (let status in byMethodData.by_status) {
-                    let hits = byMethodData.by_status[status];
-                    sum += hits;
-                }
+            for (let status in byUriData.by_status) {
+                let hits = byUriData.by_status[status];
+                sum += hits;
             }
         }
         return sum;

@@ -17,9 +17,5 @@ export class ByRefererData {
 
 export class ByUriData {
     visits: number;
-    by_method: { [key: string]: ByMethodData };
-}
-
-export class ByMethodData {
     by_status:{ [key: string]: number };
 }
