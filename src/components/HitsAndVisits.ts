@@ -48,9 +48,7 @@ export default class HitsAndVisits extends Vue {
         this.drawChart(chartData);
     }
 
-    private formatDate(date: Date): string{
-        console.log(date);
-        console.log(typeof(date));
+    private formatDate(date: string): string {
         return DateTime.fromISO(date).toFormat('yyyy-LL-dd HH:mm ZZ')
     }
 

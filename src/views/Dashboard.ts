@@ -5,10 +5,12 @@ import { DataService } from '@/services/DataService';
 import { RangeData } from '@/services/Data';
 import { HourPoint } from '@/services/TimePoint';
 import HitsAndVisits from '@/components/HitsAndVisits.vue';
+import Summary from '@/components/Summary.vue';
 
 @Component({
     components: {
         HitsAndVisits,
+        Summary,
     },
 })
 export default class Dashboard extends Vue {

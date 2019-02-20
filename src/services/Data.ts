@@ -1,5 +1,5 @@
 export class RangeData {
-    time: Date;
+    time: string;
     data: Data;
 }
 

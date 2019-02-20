@@ -13,24 +13,7 @@
 
       <div class="grid">
           <div class="box box-inversed summary">
-              <div class="label">
-                Visits
-              </div>
-              <div class="value">
-                1234
-              </div>
-              <div class="label">
-                Hits
-              </div>
-              <div class="value">
-                2234
-              </div>
-              <div class="label">
-                Errors
-              </div>
-              <div class="value">
-                0.11%
-              </div>
+              <Summary :data="data"></Summary>
           </div>
           <div class="box box-normal hits-and-visits">
               <HitsAndVisits :data="data"></HitsAndVisits>
