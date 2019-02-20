@@ -1,5 +1,4 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { TimePeriod } from '@/services/TimePeriod';
 import { RangeData } from '@/services/Data';
 import { DataService } from '@/services/DataService';
 import { ChartColors } from '@/services/ChartColors';
@@ -49,7 +48,7 @@ export default class HitsAndVisits extends Vue {
     }
 
     private formatDate(date: string): string {
-        return DateTime.fromISO(date).toFormat('yyyy-LL-dd HH:mm ZZ')
+        return DateTime.fromISO(date).toFormat('yyyy-LL-dd HH:mm ZZ');
     }
 
     private drawChart(chartData: ChartData[]): void {

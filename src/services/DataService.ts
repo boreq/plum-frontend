@@ -1,5 +1,4 @@
-import { ByUriData, Data, RangeData } from './Data';
-import { HourPoint, padWithZero } from '@/services/TimePoint';
+import { Data } from './Data';
 
 export class DataService {
 
@@ -19,7 +18,7 @@ export class DataService {
 
     getVisits(data: Data): number {
         let sum = 0;
-        if (data.uris) { 
+        if (data.uris) {
             for (const uriData of data.uris) {
                 sum += uriData.visits;
             }

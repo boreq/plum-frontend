@@ -1,9 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { TimePeriod } from '@/services/TimePeriod';
 import { ApiService } from '@/services/ApiService';
-import { DataService } from '@/services/DataService';
 import { RangeData } from '@/services/Data';
-import { HourPoint } from '@/services/TimePoint';
 import HitsAndVisits from '@/components/HitsAndVisits.vue';
 import Summary from '@/components/Summary.vue';
 

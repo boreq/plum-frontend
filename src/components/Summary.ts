@@ -1,7 +1,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { RangeData } from '@/services/Data';
 import { DataService } from '@/services/DataService';
-import Chart from 'chart.js';
 
 @Component
 export default class Summary extends Vue {
@@ -11,7 +10,7 @@ export default class Summary extends Vue {
 
     private dataService = new DataService();
 
-    get hits(): number {
+    get hits(): string {
         let sum = 0;
         for (const rangeData of this.data) {
             sum += this.dataService.getHits(rangeData.data);
@@ -19,7 +18,7 @@ export default class Summary extends Vue {
         return this.shortenIfNeeded(sum);
     }
 
-    get visits(): number {
+    get visits(): string {
         let sum = 0;
         for (const rangeData of this.data) {
             sum += this.dataService.getVisits(rangeData.data);
@@ -31,7 +30,7 @@ export default class Summary extends Vue {
         if (n >= 10000) {
             return Math.round(n / 1000) + 'k';
         }
-        return n;
+        return n.toString();
     }
 
 
