@@ -1,21 +1,26 @@
-import { TimePoint } from './TimePoint'
-
 export class RangeData {
-    time: TimePoint;
+    time: Date;
     data: Data;
 }
 
 export class Data {
-    by_referer: { [key: string]: ByRefererData };
-    by_uri: { [key: string]: ByUriData };
+    referers: ByRefererData[];
+    uris: ByUriData[];
 }
 
 export class ByRefererData {
+    referer: string;
     visits: number;
     hits: number;
 }
 
 export class ByUriData {
+    uri: string;
     visits: number;
-    by_status:{ [key: string]: number };
+    statuses: ByStatusData[];
+}
+
+export class ByStatusData {
+    status: string;
+    hits: number;
 }

@@ -1,13 +1,15 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { TimePeriod } from '@/services/TimePeriod';
 import { ApiService } from '@/services/ApiService';
+import { DataService } from '@/services/DataService';
 import { RangeData } from '@/services/Data';
+import { HourPoint } from '@/services/TimePoint';
 import HitsAndVisits from '@/components/HitsAndVisits.vue';
 
 @Component({
-  components: {
-      HitsAndVisits,
-  },
+    components: {
+        HitsAndVisits,
+    },
 })
 export default class Dashboard extends Vue {
 
@@ -29,8 +31,8 @@ export default class Dashboard extends Vue {
         const apiService = new ApiService();
         apiService.getTimeRange(this.selectedTimePeriod)
             .then(response => {
-                console.log(response);
                 this.data = response.data;
             });
     }
+
 }

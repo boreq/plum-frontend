@@ -5,6 +5,7 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "strictNullChecks": false,
+    "noImplicitAny": false,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",

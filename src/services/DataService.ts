@@ -1,14 +1,17 @@
-import { Data } from './Data';
+import { ByUriData, Data, RangeData } from './Data';
+import { HourPoint, padWithZero } from '@/services/TimePoint';
 
 export class DataService {
 
     getHits(data: Data): number {
         let sum = 0;
-        for (let uri in data.by_uri) {
-            let byUriData = data.by_uri[uri];
-            for (let status in byUriData.by_status) {
-                let hits = byUriData.by_status[status];
-                sum += hits;
+        if (data.uris) {
+            for (const uriData of data.uris) {
+                if (uriData.statuses) {
+                    for (const statusData of uriData.statuses) {
+                        sum += statusData.hits;
+                    }
+                }
             }
         }
         return sum;
@@ -16,9 +19,10 @@ export class DataService {
 
     getVisits(data: Data): number {
         let sum = 0;
-        for (let uri in data.by_uri) {
-            let byUriData = data.by_uri[uri];
-            sum += byUriData.visits;
+        if (data.uris) { 
+            for (const uriData of data.uris) {
+                sum += uriData.visits;
+            }
         }
         return sum;
     }
