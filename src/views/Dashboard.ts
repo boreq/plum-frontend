@@ -4,11 +4,13 @@ import { ApiService } from '@/services/ApiService';
 import { RangeData } from '@/services/Data';
 import HitsAndVisits from '@/components/HitsAndVisits.vue';
 import Summary from '@/components/Summary.vue';
+import Pages from '@/components/Pages.vue';
 
 @Component({
     components: {
         HitsAndVisits,
         Summary,
+        Pages,
     },
 })
 export default class Dashboard extends Vue {

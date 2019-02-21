@@ -19,7 +19,7 @@
               <HitsAndVisits :data="data"></HitsAndVisits>
           </div>
           <div class="box box-normal pages">
-              pages
+              <Pages :data="data"></Pages>
           </div>
           <div class="box box-normal referers">
               referers
