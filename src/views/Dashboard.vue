@@ -11,7 +11,7 @@
           </div>
       </div>
 
-      <div class="grid">
+      <div class="grid" :class="{ updating: updating }">
           <div class="box box-inversed summary">
               <Summary :data="data"></Summary>
           </div>

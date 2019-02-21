@@ -19,6 +19,9 @@ export default class Dashboard extends Vue {
 
     selectedTimePeriod: TimePeriod = TimePeriod.Day;
     data: RangeData[] = [];
+    updating: boolean = false;
+
+    private apiService = new ApiService();
 
     created(): void {
         this.reloadData();
@@ -30,9 +33,10 @@ export default class Dashboard extends Vue {
     }
 
     private reloadData(): void {
-        const apiService = new ApiService();
-        apiService.getTimeRange(this.selectedTimePeriod)
+        this.updating = true;
+        this.apiService.getTimeRange(this.selectedTimePeriod)
             .then(response => {
+                this.updating = false;
                 this.data = response.data;
             });
     }
