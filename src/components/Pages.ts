@@ -32,12 +32,12 @@ export default class Pages extends Vue {
                 },
                 {
                     label: 'Hits',
-                    width: '50px',
+                    width: '60px',
                     align: Align.Right,
                 },
                 {
                     label: 'Visits',
-                    width: '50px',
+                    width: '60px',
                     align: Align.Right,
                 },
             ],
