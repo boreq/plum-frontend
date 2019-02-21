@@ -22,13 +22,13 @@
               <Pages :data="data"></Pages>
           </div>
           <div class="box box-normal referers">
-              referers
+              <Pages :data="data"></Pages>
           </div>
           <div class="box box-normal errors">
-              errors
+              <Pages :data="data"></Pages>
           </div>
           <div class="box box-normal static">
-              static
+              <Pages :data="data"></Pages>
           </div>
       </div>
   </div>
