@@ -1,6 +1,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { RangeData } from '@/services/Data';
 import { DataService } from '@/services/DataService';
+import { TextService } from '@/services/TextService';
 
 @Component
 export default class Summary extends Vue {
@@ -9,29 +10,20 @@ export default class Summary extends Vue {
     private data: RangeData[];
 
     private dataService = new DataService();
+    private textService = new TextService();
 
     get hits(): string {
-        let sum = 0;
-        for (const rangeData of this.data) {
-            sum += this.dataService.getHits(rangeData.data);
-        }
-        return this.shortenIfNeeded(sum);
+        const sum = this.data.reduce((acc, v) => {
+            return acc + this.dataService.getHits(v.data);
+        }, 0);
+        return this.textService.humanizeNumber(sum);
     }
 
     get visits(): string {
-        let sum = 0;
-        for (const rangeData of this.data) {
-            sum += this.dataService.getVisits(rangeData.data);
-        }
-        return this.shortenIfNeeded(sum);
+        const sum = this.data.reduce((acc, v) => {
+            return acc + this.dataService.getVisits(v.data);
+        }, 0);
+        return this.textService.humanizeNumber(sum);
     }
-
-    private shortenIfNeeded(n: number): string {
-        if (n >= 10000) {
-            return Math.round(n / 1000) + 'k';
-        }
-        return n.toString();
-    }
-
 
 }

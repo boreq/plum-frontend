@@ -2,6 +2,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { RangeData } from '@/services/Data';
 import { TableHeader, TableRow, Align } from '@/services/Table';
 import { UriService } from '@/services/UriService';
+import { TextService } from '@/services/TextService';
 import Table from '@/components/Table.vue';
 
 class UriData {
@@ -21,6 +22,7 @@ export default class Pages extends Vue {
     private data: RangeData[];
 
     private uriService = new UriService();
+    private textService = new TextService();
 
     get header(): TableHeader {
         return {
@@ -78,8 +80,8 @@ export default class Pages extends Vue {
                 return {
                     data: [
                         v.uri,
-                        v.hits.toString(),
-                        v.visits.toString(),
+                        this.textService.humanizeNumber(v.hits),
+                        this.textService.humanizeNumber(v.visits),
                     ],
                     fraction: v.visits / total,
                 };
