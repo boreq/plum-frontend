@@ -75,7 +75,7 @@ export default class HitsAndVisits extends Vue {
             this.chart.data.datasets[1].data.push(hit);
         }
 
-        this.chart.update();
+        this.chart.update({ duration: 0 });
     }
 
     private createChart(): Chart {
