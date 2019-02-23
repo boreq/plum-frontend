@@ -6,12 +6,12 @@ export class DataService {
         let sum = 0;
         if (data.uris) {
             Object.entries(data.uris).forEach(([uri, uriData]) => {
-				if (uriData.statuses) {
-					Object.entries(uriData.statuses).forEach(([ status, statusData ]) => {
+                if (uriData.statuses) {
+                    Object.entries(uriData.statuses).forEach(([ status, statusData ]) => {
                         sum += statusData.hits;
-					});
-				}
-			});
+                    });
+                }
+            });
         }
         return sum;
     }
@@ -20,8 +20,8 @@ export class DataService {
         let sum = 0;
         if (data.uris) {
             Object.entries(data.uris).forEach(([uri, uriData]) => {
-				sum += uriData.visits;
-			});
+                sum += uriData.visits;
+            });
         }
         return sum;
     }

@@ -53,7 +53,7 @@ export default class Pages extends Vue {
         const rows: UriData[] = [];
         for (const rangeData of this.data) {
             if (rangeData.data.uris) {
-				Object.entries(rangeData.data.uris).forEach(([uri, uriData]) => {
+                Object.entries(rangeData.data.uris).forEach(([uri, uriData]) => {
                     let row = rows.find(v => v.uri === uri);
                     if (!row) {
                         row = {
