@@ -1,7 +1,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { RangeData } from '@/services/Data';
+import { RangeData } from '@/dto/Data';
+import { ChartColors } from '@/dto/ChartColors';
 import { DataService } from '@/services/DataService';
-import { ChartColors } from '@/services/ChartColors';
 import { DateTime } from 'luxon';
 import Chart from 'chart.js';
 

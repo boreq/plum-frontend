@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
-import { TimePeriod } from './TimePeriod';
-import { RangeData } from './Data';
+import { TimePeriod } from '@/dto/TimePeriod';
+import { RangeData } from '@/dto/Data';
 import axios, { AxiosResponse } from 'axios'; // do not add { }, some webshit bs?
 
 export class ApiService {

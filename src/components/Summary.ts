@@ -1,5 +1,5 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { RangeData } from '@/services/Data';
+import { RangeData } from '@/dto/Data';
 import { DataService } from '@/services/DataService';
 import { TextService } from '@/services/TextService';
 

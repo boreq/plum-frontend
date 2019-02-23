@@ -1,17 +1,17 @@
-import { Data } from './Data';
+import { Data } from '@/dto/Data';
 
 export class DataService {
 
     getHits(data: Data): number {
         let sum = 0;
         if (data.uris) {
-            for (const uriData of data.uris) {
-                if (uriData.statuses) {
-                    for (const statusData of uriData.statuses) {
+            Object.entries(data.uris).forEach(([uri, uriData]) => {
+				if (uriData.statuses) {
+					Object.entries(uriData.statuses).forEach(([ status, statusData ]) => {
                         sum += statusData.hits;
-                    }
-                }
-            }
+					});
+				}
+			});
         }
         return sum;
     }
@@ -19,9 +19,9 @@ export class DataService {
     getVisits(data: Data): number {
         let sum = 0;
         if (data.uris) {
-            for (const uriData of data.uris) {
-                sum += uriData.visits;
-            }
+            Object.entries(data.uris).forEach(([uri, uriData]) => {
+				sum += uriData.visits;
+			});
         }
         return sum;
     }

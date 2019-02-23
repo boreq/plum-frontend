@@ -1,6 +1,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { RangeData } from '@/services/Data';
-import { TableHeader, TableRow, Align } from '@/services/Table';
+import { RangeData } from '@/dto/Data';
+import { TableHeader, TableRow, Align } from '@/dto/Table';
 import { UriService } from '@/services/UriService';
 import { TextService } from '@/services/TextService';
 import Table from '@/components/Table.vue';
@@ -51,10 +51,9 @@ export default class Pages extends Vue {
             return [];
         }
         const rows: UriData[] = [];
-        for (const element of this.data) {
-            if (element.data.uris) {
-                for (const uriData of element.data.uris) {
-                    const uri = this.uriService.normalize(uriData.uri);
+        for (const rangeData of this.data) {
+            if (rangeData.data.uris) {
+				Object.entries(rangeData.data.uris).forEach(([uri, uriData]) => {
                     let row = rows.find(v => v.uri === uri);
                     if (!row) {
                         row = {
@@ -65,7 +64,7 @@ export default class Pages extends Vue {
                         rows.push(row);
                     }
                     row.visits += uriData.visits;
-                }
+                });
             }
         }
         return this.toTableRows(rows);

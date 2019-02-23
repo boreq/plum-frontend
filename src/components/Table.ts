@@ -1,5 +1,5 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { TableHeader, TableRow } from '@/services/Table';
+import { TableHeader, TableRow } from '@/dto/Table';
 
 @Component
 export default class Table extends Vue {
