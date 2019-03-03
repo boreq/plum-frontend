@@ -22,7 +22,7 @@
               <Pages :data="data"></Pages>
           </div>
           <div class="box box-normal referers">
-              <Pages :data="data"></Pages>
+              <Referers :data="data"></Referers>
           </div>
           <div class="box box-normal errors">
               <Pages :data="data"></Pages>

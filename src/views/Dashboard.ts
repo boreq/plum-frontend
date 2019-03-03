@@ -5,12 +5,14 @@ import { ApiService } from '@/services/ApiService';
 import HitsAndVisits from '@/components/HitsAndVisits.vue';
 import Summary from '@/components/Summary.vue';
 import Pages from '@/components/Pages.vue';
+import Referers from '@/components/Referers.vue';
 
 @Component({
     components: {
         HitsAndVisits,
         Summary,
         Pages,
+        Referers,
     },
 })
 export default class Dashboard extends Vue {
