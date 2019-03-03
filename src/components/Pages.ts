@@ -64,6 +64,9 @@ export default class Pages extends Vue {
                         rows.push(row);
                     }
                     row.visits += uriData.visits;
+                    Object.entries(uriData.statuses).forEach(([status, statusData]) => {
+                        row.hits += statusData.hits;
+                    });
                 });
             }
         }
