@@ -8,8 +8,7 @@ $spacing: 10px;
     grid-row-gap: $spacing;
     grid-template-areas: 
         "summary hits-and-visits hits-and-visits"
-        "summary pages referers"
-        "summary errors static";
+        "summary pages referers";
 
     >* {
         overflow: auto;
@@ -29,14 +28,6 @@ $spacing: 10px;
 
     .referers {
         grid-area: referers;
-    }
-
-    .errors {
-        grid-area: errors;
-    }
-
-    .static {
-        grid-area: static;
     }
 
     .box.box-inversed {
