@@ -9,6 +9,10 @@
                   <li><a v-bind:class="{ active: selectedTimePeriod === TimePeriod.Year }" v-on:click="selectTimePeriod(TimePeriod.Year)">1Y</a></li>
               </ul>
           </div>
+
+          <div class="box box-dimmed" v-if="updating || updatingLatest">
+              <i class="fas fa-spinner fa-spin"></i>
+          </div>
       </div>
 
       <div class="grid" :class="{ updating: updating }">

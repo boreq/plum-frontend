@@ -1,7 +1,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { RangeData } from '@/dto/Data';
 import { TableHeader, TableRow, Align } from '@/dto/Table';
-import { UriService } from '@/services/UriService';
 import { TextService } from '@/services/TextService';
 import Table from '@/components/Table.vue';
 
@@ -21,7 +20,6 @@ export default class Referers extends Vue {
     @Prop()
     private data: RangeData[];
 
-    private uriService = new UriService();
     private textService = new TextService();
 
     get header(): TableHeader {

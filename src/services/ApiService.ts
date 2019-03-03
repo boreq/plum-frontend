@@ -19,8 +19,40 @@ export class ApiService {
             case TimePeriod.Year:
                 return this.getMonthly(start, end);
             default:
-                return null;
+                throw new Error('not implemented');
         }
+    }
+
+    getTimePoint(timePeriod: TimePeriod): Promise<AxiosResponse<RangeData>> {
+        const now = DateTime.utc();
+
+        switch (timePeriod) {
+            case TimePeriod.Day:
+                return this.getHour(now);
+            case TimePeriod.Week:
+                return this.getDay(now);
+            case TimePeriod.Month:
+                return this.getDay(now);
+            case TimePeriod.Year:
+                return this.getMonth(now);
+            default:
+                throw new Error('not implemented');
+        }
+    }
+
+    private getHour(t: DateTime): Promise<AxiosResponse<RangeData>> {
+        const url = `hour/${t.year}/${t.month}/${t.day}/${t.hour}.json`;
+        return axios.get<RangeData>(process.env.VUE_APP_API_PREFIX + url);
+    }
+
+    private getDay(t: DateTime): Promise<AxiosResponse<RangeData>> {
+        const url = `day/${t.year}/${t.month}/${t.day}.json`;
+        return axios.get<RangeData>(process.env.VUE_APP_API_PREFIX + url);
+    }
+
+    private getMonth(t: DateTime): Promise<AxiosResponse<RangeData>> {
+        const url = `month/${t.year}/${t.month}.json`;
+        return axios.get<RangeData>(process.env.VUE_APP_API_PREFIX + url);
     }
 
     private getHourly(from: DateTime, to: DateTime): Promise<AxiosResponse<RangeData[]>> {

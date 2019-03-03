@@ -22,25 +22,74 @@ export default class Dashboard extends Vue {
     selectedTimePeriod: TimePeriod = TimePeriod.Day;
     data: RangeData[] = [];
     updating: boolean = false;
+    updatingLatest: boolean = false;
 
     private apiService = new ApiService();
+    private timeoutID: number;
 
     created(): void {
         this.reloadData();
     }
 
+    beforeDestroy(): void {
+        this.cancelReload();
+    }
+
     selectTimePeriod(timePeriod: TimePeriod): void {
         this.selectedTimePeriod = timePeriod;
-        this.reloadData();
+        if (!this.updating) {
+            this.reloadData();
+        }
     }
 
     private reloadData(): void {
         this.updating = true;
-        this.apiService.getTimeRange(this.selectedTimePeriod)
+        const timePeriod = this.selectedTimePeriod;
+        this.apiService.getTimeRange(timePeriod)
             .then(response => {
                 this.updating = false;
                 this.data = response.data;
+                this.scheduleReload(timePeriod);
             });
+    }
+
+    private scheduleReload(timePeriod: TimePeriod): void {
+        this.cancelReload();
+        this.timeoutID = setTimeout(() => this.reloadLatestData(timePeriod), 5000);
+    }
+
+    private cancelReload(): void {
+        if (this.timeoutID) {
+            clearTimeout(this.timeoutID);
+        }
+    }
+
+    private reloadLatestData(timePeriod: TimePeriod): void {
+        this.updatingLatest = true;
+        this.apiService.getTimePoint(timePeriod)
+            .then(response => {
+                this.updatingLatest = false;
+                if (timePeriod === this.selectedTimePeriod) {
+                    this.updateLatestData(response.data);
+                    this.scheduleReload(timePeriod);
+                }
+            })
+            .catch(error => {
+                this.updatingLatest = false;
+                this.scheduleReload(timePeriod);
+            });
+    }
+
+    private updateLatestData(rangeData: RangeData): void {
+        if (this.data.length > 0) {
+            const lastIndex = this.data.length - 1;
+            if (rangeData.time === this.data[lastIndex].time) {
+                this.data[lastIndex] = rangeData;
+            } else {
+                this.data.push(rangeData);
+                this.data.shift();
+            }
+        }
     }
 
 }
