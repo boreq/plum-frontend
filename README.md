@@ -1,4 +1,4 @@
-# goaccess-frontend
+# Plum frontend
 
 ## Project setup
 ```
