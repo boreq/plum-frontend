@@ -82,13 +82,15 @@ export default class Dashboard extends Vue {
 
     private updateLatestData(rangeData: RangeData): void {
         if (this.data.length > 0) {
-            const lastIndex = this.data.length - 1;
-            if (rangeData.time === this.data[lastIndex].time) {
-                this.data[lastIndex] = rangeData;
+            const data = Array.from(this.data);
+            const lastIndex = data.length - 1;
+            if (rangeData.time === data[lastIndex].time) {
+                data[lastIndex] = rangeData;
             } else {
-                this.data.push(rangeData);
-                this.data.shift();
+                data.push(rangeData);
+                data.shift();
             }
+            this.data = data;
         }
     }
 
