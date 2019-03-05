@@ -10,7 +10,7 @@
         <footer class="just-footer">
             <div class="just-container-wrapper">
                 <div class="just-container">
-                    <a href="https://github.com">Github</a>
+                    <a href="https://github.com/boreq/plum">Github</a>
                 </div>
             </div>
         </footer>
