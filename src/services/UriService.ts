@@ -15,6 +15,11 @@ export class UriService {
         '.rss',
         '.txt',
         '.abe',
+
+        '.otf',
+        '.ttf',
+        '.woff',
+        '.woff2',
     ];
 
     isStaticResource(uri: string): boolean {
