@@ -6,6 +6,8 @@ import HitsAndVisits from '@/components/HitsAndVisits.vue';
 import Summary from '@/components/Summary.vue';
 import Pages from '@/components/Pages.vue';
 import Referers from '@/components/Referers.vue';
+import BytesSent from '@/components/BytesSent.vue';
+import BytesSentChart from '@/components/BytesSentChart.vue';
 
 @Component({
     components: {
@@ -13,6 +15,8 @@ import Referers from '@/components/Referers.vue';
         Summary,
         Pages,
         Referers,
+        BytesSent,
+        BytesSentChart,
     },
 })
 export default class Dashboard extends Vue {

@@ -1,3 +1,5 @@
+import prettyBytes from 'pretty-bytes';
+
 export class TextService {
 
     humanizeNumber(n: number): string {
@@ -9,4 +11,9 @@ export class TextService {
         }
         return n.toString();
     }
+
+    humanizeBytes(n: number): string {
+        return prettyBytes(n);
+    }
+
 }

@@ -28,6 +28,12 @@
           <div class="box box-normal referers">
               <Referers :data="data"></Referers>
           </div>
+          <div class="box box-normal bytes-sent-chart">
+              <BytesSentChart :data="data"></BytesSentChart>
+          </div>
+          <div class="box box-normal bytes-sent">
+              <BytesSent :data="data"></BytesSent>
+          </div>
       </div>
   </div>
 </template>

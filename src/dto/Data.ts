@@ -19,6 +19,7 @@ export class RefererData {
 
 export class UriData {
     visits: number;
+    bytes: number;
     statuses: Map<StatusData>;
 }
 

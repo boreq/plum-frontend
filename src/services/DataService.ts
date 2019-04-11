@@ -26,5 +26,15 @@ export class DataService {
         return sum;
     }
 
+    getBytesSent(data: Data): number {
+        let sum = 0;
+        if (data.uris) {
+            Object.entries(data.uris).forEach(([uri, uriData]) => {
+                sum += uriData.bytes;
+            });
+        }
+        return sum;
+    }
+
 }
 
