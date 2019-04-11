@@ -102,3 +102,30 @@ $spacing: 10px;
 .updating {
     opacity: 0.5;
 }
+
+@media (max-width: 900px) { 
+    .grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto auto auto;
+        grid-template-areas: 
+            "summary summary"
+            "hits-and-visits hits-and-visits"
+            "pages referers"
+            "bytes-sent-chart bytes-sent-chart"
+            "bytes-sent bytes-sent";
+    }
+}
+
+@media (max-width: 800px) { 
+    .grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto auto;
+        grid-template-areas: 
+            "summary"
+            "hits-and-visits"
+            "pages"
+            "referers"
+            "bytes-sent-chart"
+            "bytes-sent";
+    }
+}
