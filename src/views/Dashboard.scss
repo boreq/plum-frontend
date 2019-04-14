@@ -112,7 +112,7 @@ $spacing: 10px;
     opacity: 0.5;
 }
 
-@media (max-width: 900px) {
+@media (max-width: $media-threshold-1) {
     .grid {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto auto auto auto auto auto;
@@ -127,7 +127,7 @@ $spacing: 10px;
     }
 }
 
-@media (max-width: 800px) {
+@media (max-width: $media-threshold-2) {
     .grid {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto auto auto auto auto auto;
