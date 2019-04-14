@@ -2,7 +2,7 @@
     <div>
         <div class="modal-open modal" v-on:click="close()">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content" v-on:click="$event.stopPropagation()">
                     <div class="modal-header">
                         {{ title }}
                     </div>
