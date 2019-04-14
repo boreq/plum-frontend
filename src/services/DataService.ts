@@ -1,4 +1,4 @@
-import { Data } from '@/dto/Data';
+import { Data, Dictionary } from '@/dto/Data';
 
 export class DataService {
 
@@ -7,7 +7,7 @@ export class DataService {
         if (data.uris) {
             Object.entries(data.uris).forEach(([uri, uriData]) => {
                 if (uriData.statuses) {
-                    Object.entries(uriData.statuses).forEach(([ status, statusData ]) => {
+                    Object.entries(uriData.statuses).forEach(([status, statusData]) => {
                         sum += statusData.hits;
                     });
                 }
@@ -34,6 +34,21 @@ export class DataService {
             });
         }
         return sum;
+    }
+
+    getStatusMapping(data: Data): Dictionary<Dictionary<number>> {
+        if (data.uris) {
+            return Object.entries(data.uris).reduce((acc, [uri, uriData]) => {
+                Object.entries(uriData.statuses).forEach(([status, statusData]) => {
+                    if (!(status in acc)) {
+                        acc[status] = {};
+                    }
+                    acc[status][uri] = (acc[status][uri] || 0) + statusData.hits;
+                });
+                return acc;
+            }, {});
+        }
+        return {};
     }
 
 }

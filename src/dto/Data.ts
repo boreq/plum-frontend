@@ -1,4 +1,4 @@
-interface Map<T> {
+export interface Dictionary<T> {
     [key: string]: T;
 }
 
@@ -8,8 +8,8 @@ export class RangeData {
 }
 
 export class Data {
-    referers: Map<RefererData>;
-    uris: Map<UriData>;
+    referers: Dictionary<RefererData>;
+    uris: Dictionary<UriData>;
 }
 
 export class RefererData {
@@ -20,7 +20,7 @@ export class RefererData {
 export class UriData {
     visits: number;
     bytes: number;
-    statuses: Map<StatusData>;
+    statuses: Dictionary<StatusData>;
 }
 
 export class StatusData {

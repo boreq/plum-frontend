@@ -9,7 +9,7 @@
             no data
         </div>
         <div class="tbody" v-if="dataPresent">
-            <div class="tr" v-for="(row, rowIndex) in limitedRows">
+            <div class="tr" v-for="(row, rowIndex) in limitedRows" v-on:click="toggleRow(row)" :style="getRowStyle(rowIndex)">
                 <div class="td" v-for="(value, columnIndex) in row.data" :style="getColumnStyle(columnIndex)" :title="value">
                     {{ value }}
                 </div>

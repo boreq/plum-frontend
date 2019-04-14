@@ -8,6 +8,9 @@ import Pages from '@/components/Pages.vue';
 import Referers from '@/components/Referers.vue';
 import BytesSent from '@/components/BytesSent.vue';
 import BytesSentChart from '@/components/BytesSentChart.vue';
+import StatusCodesChart from '@/components/StatusCodesChart.vue';
+import StatusCodes from '@/components/StatusCodes.vue';
+
 
 @Component({
     components: {
@@ -17,6 +20,8 @@ import BytesSentChart from '@/components/BytesSentChart.vue';
         Referers,
         BytesSent,
         BytesSentChart,
+        StatusCodesChart,
+        StatusCodes,
     },
 })
 export default class Dashboard extends Vue {
@@ -24,12 +29,16 @@ export default class Dashboard extends Vue {
     TimePeriod = TimePeriod;
 
     selectedTimePeriod: TimePeriod = TimePeriod.Day;
-    data: RangeData[] = [];
     updating: boolean = false;
     updatingLatest: boolean = false;
 
+    data: RangeData[] = [];
+    rangeData: RangeData[] = [];
+    selectedRangeData: RangeData;
+
     private apiService = new ApiService();
     private timeoutID: number;
+
 
     created(): void {
         this.reloadData();
@@ -46,13 +55,23 @@ export default class Dashboard extends Vue {
         }
     }
 
+    onSelectData(index: number): void {
+        if (index && index >= 0 && index < this.rangeData.length) {
+            this.selectedRangeData = this.rangeData[index];
+        } else {
+            this.selectedRangeData = null;
+        }
+        this.updateSelectedData();
+    }
+
     private reloadData(): void {
         this.updating = true;
         const timePeriod = this.selectedTimePeriod;
         this.apiService.getTimeRange(timePeriod)
             .then(response => {
                 this.updating = false;
-                this.data = response.data;
+                this.rangeData = response.data;
+                this.updateSelectedData();
                 this.scheduleReload(timePeriod);
             });
     }
@@ -85,8 +104,8 @@ export default class Dashboard extends Vue {
     }
 
     private updateLatestData(rangeData: RangeData): void {
-        if (this.data.length > 0) {
-            const data = Array.from(this.data);
+        if (this.rangeData.length > 0) {
+            const data = Array.from(this.rangeData);
             const lastIndex = data.length - 1;
             if (rangeData.time === data[lastIndex].time) {
                 data[lastIndex] = rangeData;
@@ -94,7 +113,16 @@ export default class Dashboard extends Vue {
                 data.push(rangeData);
                 data.shift();
             }
-            this.data = data;
+            this.rangeData = data;
+            this.updateSelectedData();
+        }
+    }
+
+    private updateSelectedData(): void {
+        if (this.selectedRangeData) {
+            this.data = [this.selectedRangeData];
+        } else {
+            this.data = this.rangeData;
         }
     }
 

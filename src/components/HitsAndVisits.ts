@@ -75,7 +75,7 @@ export default class HitsAndVisits extends Vue {
             this.chart.data.datasets[1].data.push(hit);
         }
 
-        this.chart.update({ duration: 0 });
+        this.chart.update({duration: 0});
     }
 
     private createChart(): Chart {
@@ -121,6 +121,11 @@ export default class HitsAndVisits extends Vue {
                 },
                 tooltips: {
                     mode: 'index',
+                },
+                onClick: evt => {
+                    const element = this.chart.getElementAtEvent(evt) as any[];
+                    const index = element && element.length > 0 ? element[0]._index : null;
+                    this.$emit('select-data', index);
                 },
             },
         });

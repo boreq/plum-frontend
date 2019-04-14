@@ -20,7 +20,7 @@
               <Summary :data="data"></Summary>
           </div>
           <div class="box box-normal hits-and-visits">
-              <HitsAndVisits :data="data"></HitsAndVisits>
+              <HitsAndVisits :data="data" v-on:select-data="onSelectData($event)"></HitsAndVisits>
           </div>
           <div class="box box-normal pages">
               <Pages :data="data"></Pages>
@@ -29,10 +29,16 @@
               <Referers :data="data"></Referers>
           </div>
           <div class="box box-normal bytes-sent-chart">
-              <BytesSentChart :data="data"></BytesSentChart>
+              <BytesSentChart :data="data" v-on:select-data="onSelectData($event)"></BytesSentChart>
           </div>
           <div class="box box-normal bytes-sent">
               <BytesSent :data="data"></BytesSent>
+          </div>
+          <div class="box box-normal status-codes-chart">
+              <StatusCodesChart :data="data" v-on:select-data="onSelectData($event)"></StatusCodesChart>
+          </div>
+          <div class="box box-normal status-codes">
+              <StatusCodes :data="data"></StatusCodes>
           </div>
       </div>
   </div>
