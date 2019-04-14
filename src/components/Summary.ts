@@ -26,4 +26,11 @@ export default class Summary extends Vue {
         return this.textService.humanizeNumber(sum);
     }
 
+    get bytesSent(): string {
+        const sum = this.data.reduce((acc, v) => {
+            return acc + this.dataService.getBytesSent(v.data);
+        }, 0);
+        return this.textService.humanizeBytes(sum, 0);
+    }
+
 }

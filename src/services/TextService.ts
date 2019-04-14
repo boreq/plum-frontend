@@ -1,4 +1,4 @@
-import prettyBytes from 'pretty-bytes';
+import filesize from 'filesize';
 
 export class TextService {
 
@@ -12,8 +12,12 @@ export class TextService {
         return n.toString();
     }
 
-    humanizeBytes(n: number): string {
-        return prettyBytes(n);
+    humanizeBytes(n: number, round = 2): string {
+        const options = {
+            base: 10,
+            round: round,
+        };
+        return filesize(n, options);
     }
 
 }

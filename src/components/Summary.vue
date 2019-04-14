@@ -12,6 +12,12 @@
           <div class="value">
               {{ hits }}
           </div>
+          <div class="label">
+            Bytes sent
+          </div>
+          <div class="value">
+              {{ bytesSent }}
+          </div>
     </div>
 </template>
 <script lang="ts" src="./Summary.ts"></script>
