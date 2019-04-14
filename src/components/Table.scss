@@ -55,4 +55,17 @@
         }
 
     }
+
+    .navigation {
+        display: flex;
+        padding: 1em 0 0;
+
+        .center {
+            flex: 1;
+        }
+
+        .inactive {
+            color: #ddd;
+        }
+    }
 }

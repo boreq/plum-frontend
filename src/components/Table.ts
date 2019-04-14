@@ -11,14 +11,20 @@ export default class Table extends Vue {
     rows: TableRow[];
 
     @Prop({ default: 10 })
-    limit: number;
+    perPage: number;
+
+    page = 0;
 
     get dataPresent(): boolean {
         return this.rows && this.rows.length > 0;
     }
 
     get limitedRows(): TableRow[] {
-        return this.rows.slice(0, this.limit);
+        if (this.page > this.allPages) {
+            this.page = 0;
+        }
+        const start = this.page * this.perPage;
+        return this.rows.slice(start, start + this.perPage);
     }
 
     getColumnStyle(columnIndex: number): string {
@@ -39,12 +45,39 @@ export default class Table extends Vue {
     }
 
     getBackgroundStyle(rowIndex: number): string {
-        const row = this.rows[rowIndex];
+        const row = this.limitedRows[rowIndex];
         if (row.fraction) {
             const percentage = Math.round(row.fraction * 100);
             return `width: ${percentage}%;`;
         }
         return 'display: none;';
+    }
+
+    prevPage(): void {
+        if (this.hasPrevPage) {
+            this.page -= 1;
+        }
+    }
+
+    nextPage(): void {
+        if (this.hasNextPage) {
+            this.page += 1;
+        }
+    }
+
+    get hasNextPage() {
+        return this.page < this.allPages;
+    }
+
+    get hasPrevPage() {
+        return this.page > 0;
+    }
+
+    get allPages(): number {
+        if (this.rows) {
+            return Math.floor(this.rows.length / this.perPage);
+        }
+        return 0;
     }
 
 }

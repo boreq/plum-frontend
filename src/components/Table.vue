@@ -16,6 +16,21 @@
                 <div class="background" :style="getBackgroundStyle(rowIndex)"></div>
             </div>
         </div>
+        <div class="navigation" v-if="dataPresent">
+            <div>
+                <a v-on:click="prevPage()"
+                   v-bind:class="{inactive: !hasPrevPage}">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </div>
+            <div class="center"></div>
+            <div>
+                <a v-on:click="nextPage()"
+                   v-bind:class="{inactive: !hasNextPage}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
     </div>
 </template>
 <script lang="ts" src="./Table.ts"></script>
