@@ -13,9 +13,10 @@ export default class Table extends Vue {
     @Prop({default: 10})
     perPage: number;
 
-    page = 0;
+    @Prop()
+    clickable: boolean;
 
-    private focusedRow: TableRow = null;
+    page = 0;
 
     get dataPresent(): boolean {
         return this.rows && this.rows.length > 0;
@@ -26,19 +27,7 @@ export default class Table extends Vue {
             this.page = 0;
         }
         const start = this.page * this.perPage;
-        if (this.focusedRow) {
-            return this.focusedRowWithChildren.slice(0, this.perPage);
-        } else {
-            return this.rows.slice(start, start + this.perPage);
-        }
-    }
-
-    get focusedRowWithChildren(): TableRow[] {
-        const acc = [this.focusedRow];
-        if (this.focusedRow.children) {
-            this.focusedRow.children.forEach(childRow => acc.push(childRow));
-        }
-        return acc;
+        return this.rows.slice(start, start + this.perPage);
     }
 
     getColumnStyle(columnIndex: number): string {
@@ -67,14 +56,6 @@ export default class Table extends Vue {
         return 'display: none;';
     }
 
-    getRowStyle(rowIndex: number): string {
-        const row = this.limitedRows[rowIndex];
-        if (row.children && row.children.length > 0) {
-            return 'cursor: pointer';
-        }
-        return '';
-    }
-
 
     prevPage(): void {
         if (this.hasPrevPage) {
@@ -88,24 +69,21 @@ export default class Table extends Vue {
         }
     }
 
-    toggleRow(row: TableRow): void {
-        if (this.focusedRow) {
-            this.focusedRow = null;
-        } else {
-            this.focusedRow = row;
-        }
+    click(rowIndex: number): void {
+        const index = this.perPage * this.page + rowIndex;
+        this.$emit('click-row', index);
     }
 
     get hasNextPage() {
-        return !this.focusedRow && this.page < this.allPages;
+        return this.page < this.allPages;
     }
 
     get hasPrevPage() {
-        return !this.focusedRow && this.page > 0;
+        return this.page > 0;
     }
 
     get allPages(): number {
-        if (!this.focusedRow && this.rows) {
+        if (this.rows) {
             return Math.floor(this.rows.length / this.perPage);
         }
         return 0;

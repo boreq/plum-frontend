@@ -17,5 +17,4 @@ export class TableHeaderColumn {
 export class TableRow {
     data: string[];
     fraction: number;
-    children?: TableRow[];
 }

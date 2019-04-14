@@ -3,6 +3,7 @@ import { Dictionary, RangeData } from '@/dto/Data';
 import { Align, TableHeader, TableRow } from '@/dto/Table';
 import { DataService } from '@/services/DataService';
 import Table from '@/components/Table.vue';
+import TablePopup from '@/components/TablePopup.vue';
 
 class StatusCodesData {
     status: string;
@@ -12,12 +13,17 @@ class StatusCodesData {
 @Component({
     components: {
         Table,
+        TablePopup,
     },
 })
 export default class StatusCodes extends Vue {
 
     @Prop()
     private data: RangeData[];
+
+    modalRows: TableRow[] = [];
+    modalTitle: string;
+    displayModal = false;
 
     private dataService = new DataService();
 
@@ -38,10 +44,40 @@ export default class StatusCodes extends Vue {
         };
     }
 
+    get popupHeader(): TableHeader {
+        return {
+            columns: [
+                {
+                    label: 'Resource',
+                    width: null,
+                    align: Align.Left,
+                },
+                {
+                    label: 'Hits',
+                    width: '100px',
+                    align: Align.Right,
+                },
+            ],
+        };
+    }
+
     get rows(): TableRow[] {
         if (!this.data) {
             return [];
         }
+        const rows = this.getStatusCodesData();
+        return this.toTableRows(rows);
+    }
+
+    clickRow(rowIndex: number): void {
+        const row = this.getStatusCodesData()[rowIndex];
+        const children = this.getChildren(row);
+        this.modalRows = children;
+        this.modalTitle = `Resources returning status ${row.status}`;
+        this.displayModal = true;
+    }
+
+    private getStatusCodesData(): StatusCodesData[] {
         const rows: StatusCodesData[] = [];
         for (const rangeData of this.data) {
             if (rangeData.data) {
@@ -61,13 +97,12 @@ export default class StatusCodes extends Vue {
                     });
             }
         }
-        return this.toTableRows(rows);
+        return rows.sort((a, b) => a.status > b.status ? 1 : -1);
     }
 
     private toTableRows(statusCodesData: StatusCodesData[]): TableRow[] {
         const total: number = statusCodesData.reduce((acc, v) => acc + this.getTotal(v), 0);
         return statusCodesData
-            .sort((a, b) => a.status > b.status ? 1 : -1)
             .reduce((acc, v) => {
                 const statusTotal = this.getTotal(v);
                 acc.push({
@@ -76,7 +111,6 @@ export default class StatusCodes extends Vue {
                         statusTotal.toString(),
                     ],
                     fraction: statusTotal / total,
-                    children: this.getChildren(v).splice(0, 10),
                 });
                 return acc;
             }, []);
@@ -90,6 +124,8 @@ export default class StatusCodes extends Vue {
     }
 
     private getChildren(v: StatusCodesData): TableRow[] {
+        const total: number = this.getTotal(v);
+
         return Object.entries(v.uris)
             .map(([uri, hits]) => {
                 return {
@@ -97,7 +133,7 @@ export default class StatusCodes extends Vue {
                         uri,
                         hits.toString(),
                     ],
-                    fraction: null,
+                    fraction: hits / total,
                 };
             })
             .sort((a, b) => Number(a.data[1]) < Number(b.data[1]) ? 1 : -1);
