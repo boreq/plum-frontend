@@ -19,7 +19,7 @@ class StatusCodesData {
 export default class StatusCodes extends Vue {
 
     @Prop()
-    private data: RangeData[];
+    data: RangeData[];
 
     modalRows: TableRow[] = [];
     modalTitle: string;
