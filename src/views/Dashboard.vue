@@ -33,6 +33,10 @@
               </ul>
           </div>
 
+          <div class="box box-dimmed" v-if="selectedRangeData">
+              <a title="Click to cancel." v-on:click="selectData(null)">You are inspecting a single data point.</a>
+          </div>
+
           <div class="box box-dimmed" v-if="updating || updatingLatest">
               <i class="fas fa-spinner fa-spin"></i>
           </div>
@@ -43,7 +47,7 @@
               <Summary :data="data"></Summary>
           </div>
           <div class="box box-normal hits-and-visits">
-              <HitsAndVisits :data="data" :groupingType="selectedGroupingType" v-on:select-data="onSelectData($event)"></HitsAndVisits>
+              <HitsAndVisits :data="data" :groupingType="selectedGroupingType" v-on:select-data="selectData($event)"></HitsAndVisits>
           </div>
           <div class="box box-normal pages">
               <Pages :data="data"></Pages>
@@ -52,13 +56,13 @@
               <Referers :data="data"></Referers>
           </div>
           <div class="box box-normal bytes-sent-chart">
-              <BytesSentChart :data="data" :groupingType="selectedGroupingType" v-on:select-data="onSelectData($event)"></BytesSentChart>
+              <BytesSentChart :data="data" :groupingType="selectedGroupingType" v-on:select-data="selectData($event)"></BytesSentChart>
           </div>
           <div class="box box-normal bytes-sent">
               <BytesSent :data="data"></BytesSent>
           </div>
           <div class="box box-normal status-codes-chart">
-              <StatusCodesChart :data="data" :groupingType="selectedGroupingType" v-on:select-data="onSelectData($event)"></StatusCodesChart>
+              <StatusCodesChart :data="data" :groupingType="selectedGroupingType" v-on:select-data="selectData($event)"></StatusCodesChart>
           </div>
           <div class="box box-normal status-codes">
               <StatusCodes :data="data"></StatusCodes>
