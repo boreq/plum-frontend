@@ -10,6 +10,29 @@
               </ul>
           </div>
 
+          <div class="box box-dimmed">
+              <ul>
+                  <li v-if="groupingTypeAvailable(GroupingType.Hourly)">
+                      <a v-bind:class="{ active: selectedGroupingType === GroupingType.Hourly }"
+                         v-on:click="selectGroupingType(GroupingType.Hourly)">
+                          Hourly
+                      </a>
+                  </li>
+                  <li v-if="groupingTypeAvailable(GroupingType.Daily)">
+                      <a v-bind:class="{ active: selectedGroupingType === GroupingType.Daily }"
+                         v-on:click="selectGroupingType(GroupingType.Daily)">
+                          Daily
+                      </a>
+                  </li>
+                  <li v-if="groupingTypeAvailable(GroupingType.Monthly)">
+                      <a v-bind:class="{ active: selectedGroupingType === GroupingType.Monthly }"
+                         v-on:click="selectGroupingType(GroupingType.Monthly)">
+                          Monthly
+                      </a>
+                  </li>
+              </ul>
+          </div>
+
           <div class="box box-dimmed" v-if="updating || updatingLatest">
               <i class="fas fa-spinner fa-spin"></i>
           </div>

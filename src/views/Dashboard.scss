@@ -78,6 +78,10 @@ $spacing: 10px;
                 padding: 0 5px 0 0;
                 display: inline-block;
             }
+
+            li:last-child {
+                padding: 0;
+            }
         }
 
         a {

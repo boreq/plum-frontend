@@ -1,39 +1,36 @@
 import { DateTime } from 'luxon';
 import { TimePeriod } from '@/dto/TimePeriod';
+import { GroupingType } from '@/dto/GroupingType';
 import { RangeData } from '@/dto/Data';
 import axios, { AxiosResponse } from 'axios'; // do not add { }, some webshit bs?
 
 export class ApiService {
 
-    getTimeRange(timePeriod: TimePeriod): Promise<AxiosResponse<RangeData[]>> {
+    getTimeRange(timePeriod: TimePeriod, groupingType: GroupingType): Promise<AxiosResponse<RangeData[]>> {
         const end = DateTime.utc();
         const start = end.minus(this.toLuxonRange(timePeriod));
 
-        switch (timePeriod) {
-            case TimePeriod.Day:
+        switch (groupingType) {
+            case GroupingType.Hourly:
                 return this.getHourly(start, end);
-            case TimePeriod.Week:
+            case GroupingType.Daily:
                 return this.getDaily(start, end);
-            case TimePeriod.Month:
-                return this.getDaily(start, end);
-            case TimePeriod.Year:
+            case GroupingType.Monthly:
                 return this.getMonthly(start, end);
             default:
                 throw new Error('not implemented');
         }
     }
 
-    getTimePoint(timePeriod: TimePeriod): Promise<AxiosResponse<RangeData>> {
+    getTimePoint(timePeriod: TimePeriod, groupingType: GroupingType): Promise<AxiosResponse<RangeData>> {
         const now = DateTime.utc();
 
-        switch (timePeriod) {
-            case TimePeriod.Day:
+        switch (groupingType) {
+            case GroupingType.Hourly:
                 return this.getHour(now);
-            case TimePeriod.Week:
+            case GroupingType.Daily:
                 return this.getDay(now);
-            case TimePeriod.Month:
-                return this.getDay(now);
-            case TimePeriod.Year:
+            case GroupingType.Monthly:
                 return this.getMonth(now);
             default:
                 throw new Error('not implemented');
