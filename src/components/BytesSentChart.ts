@@ -3,8 +3,8 @@ import { RangeData } from '@/dto/Data';
 import { ChartColors } from '@/dto/ChartColors';
 import { DataService } from '@/services/DataService';
 import { TextService } from '@/services/TextService';
-import { DateTime } from 'luxon';
 import Chart from 'chart.js';
+import { GroupingType } from '../dto/GroupingType';
 
 class ChartData {
     label: string;
@@ -16,6 +16,9 @@ export default class HitsAndVisits extends Vue {
 
     @Prop()
     private data: RangeData[];
+
+    @Prop()
+    private groupingType: GroupingType;
 
     private chart: Chart;
 
@@ -39,16 +42,12 @@ export default class HitsAndVisits extends Vue {
         const chartData: ChartData[] = [];
         for (const rangeData of this.data) {
             chartData.push({
-                label: this.formatDate(rangeData.time),
+                label: this.textService.formatDate(rangeData.time, this.groupingType),
                 bytes: this.dataService.getBytesSent(rangeData.data),
             });
         }
 
         this.drawChart(chartData);
-    }
-
-    private formatDate(date: string): string {
-        return DateTime.fromISO(date).toFormat('yyyy-LL-dd HH:mm ZZ');
     }
 
     private drawChart(chartData: ChartData[]): void {
@@ -69,7 +68,7 @@ export default class HitsAndVisits extends Vue {
             this.chart.data.datasets[0].data.push(b);
         }
 
-        this.chart.update({ duration: 0 });
+        this.chart.update({duration: 0});
     }
 
     private createChart(): Chart {

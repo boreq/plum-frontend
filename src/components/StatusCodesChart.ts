@@ -2,8 +2,9 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { Dictionary, RangeData } from '@/dto/Data';
 import { ChartColors } from '@/dto/ChartColors';
 import { DataService } from '@/services/DataService';
-import { DateTime } from 'luxon';
+import { TextService } from '@/services/TextService';
 import Chart from 'chart.js';
+import { GroupingType } from '../dto/GroupingType';
 
 class ChartData {
     label: string;
@@ -16,9 +17,13 @@ export default class StatusCodesChart extends Vue {
     @Prop()
     private data: RangeData[];
 
+    @Prop()
+    private groupingType: GroupingType;
+
     private chart: Chart;
 
     private dataService = new DataService();
+    private textService = new TextService();
 
     @Watch('data')
     onRangeDataChanged(value: RangeData[], oldValue: RangeData[]) {
@@ -36,15 +41,11 @@ export default class StatusCodesChart extends Vue {
 
         const chartData: ChartData[] = this.data.map(rangeData => {
             return {
-                label: this.formatDate(rangeData.time),
+                label: this.textService.formatDate(rangeData.time, this.groupingType),
                 statuses: this.dataService.getStatusMapping(rangeData.data),
             };
         });
         this.drawChart(chartData);
-    }
-
-    private formatDate(date: string): string {
-        return DateTime.fromISO(date).toFormat('yyyy-LL-dd HH:mm ZZ');
     }
 
     private drawChart(chartData: ChartData[]): void {

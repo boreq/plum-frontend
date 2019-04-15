@@ -60,6 +60,27 @@ export default class Dashboard extends Vue {
         }
     }
 
+    selectGroupingType(groupingType: GroupingType): void {
+        this.selectedGroupingType = groupingType;
+        if (!this.updating) {
+            this.reloadData();
+        }
+    }
+
+    onSelectData(index: number): void {
+        if (index && index >= 0 && index < this.rangeData.length) {
+            this.selectedRangeData = this.rangeData[index];
+        } else {
+            this.selectedRangeData = null;
+        }
+        this.updateSelectedData();
+    }
+
+    groupingTypeAvailable(groupingType: GroupingType): boolean {
+        return this.getAvailableGroupingTypes(this.selectedTimePeriod)
+            .some(v => v === groupingType);
+    }
+
     private selectAppropriateGroupingType(timePeriod: TimePeriod): void {
         switch (this.selectedTimePeriod) {
             case TimePeriod.Day:
@@ -77,22 +98,6 @@ export default class Dashboard extends Vue {
             default:
                 throw new Error('not implemented');
         }
-    }
-
-    selectGroupingType(groupingType: GroupingType): void {
-        this.selectedGroupingType = groupingType;
-        if (!this.updating) {
-            this.reloadData();
-        }
-    }
-
-    onSelectData(index: number): void {
-        if (index && index >= 0 && index < this.rangeData.length) {
-            this.selectedRangeData = this.rangeData[index];
-        } else {
-            this.selectedRangeData = null;
-        }
-        this.updateSelectedData();
     }
 
     private reloadData(): void {
@@ -156,11 +161,6 @@ export default class Dashboard extends Vue {
         } else {
             this.data = this.rangeData;
         }
-    }
-
-    groupingTypeAvailable(groupingType: GroupingType): boolean {
-        return this.getAvailableGroupingTypes(this.selectedTimePeriod)
-            .some(v => v === groupingType);
     }
 
     private getAvailableGroupingTypes(timePeriod: TimePeriod): GroupingType[] {
