@@ -34,13 +34,13 @@ export class TextService {
 
     formatDate(isoDate: string, groupingType: GroupingType): string {
         const format = this.getDateFormat(groupingType);
-        return DateTime.fromISO(isoDate).toFormat(format);
+        return DateTime.fromISO(isoDate).toLocal().toFormat(format);
     }
 
     private getDateFormat(groupingType: GroupingType): string {
         switch (groupingType) {
             case GroupingType.Hourly:
-                return 'yyyy-LL-dd HH:mm ZZ';
+                return 'yyyy-LL-dd HH:mm';
             case GroupingType.Daily:
                 return 'yyyy-LL-dd';
             case GroupingType.Monthly:
