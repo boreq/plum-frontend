@@ -2,6 +2,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Dictionary, RangeData } from '@/dto/Data';
 import { Align, TableHeader, TableRow } from '@/dto/Table';
 import { DataService } from '@/services/DataService';
+import { TextService } from '@/services/TextService';
 import Table from '@/components/Table.vue';
 import TablePopup from '@/components/TablePopup.vue';
 
@@ -26,6 +27,7 @@ export default class StatusCodes extends Vue {
     displayModal = false;
 
     private dataService = new DataService();
+    private textService = new TextService();
 
     get header(): TableHeader {
         return {
@@ -73,7 +75,7 @@ export default class StatusCodes extends Vue {
         const row = this.getStatusCodesData()[rowIndex];
         const children = this.getChildren(row);
         this.modalRows = children;
-        this.modalTitle = `Resources returning status ${row.status}`;
+        this.modalTitle = this.textService.getHttpStatusText(row.status);
         this.displayModal = true;
     }
 
@@ -107,7 +109,7 @@ export default class StatusCodes extends Vue {
                 const statusTotal = this.getTotal(v);
                 acc.push({
                     data: [
-                        v.status,
+                        this.textService.getHttpStatusText(v.status),
                         statusTotal.toString(),
                     ],
                     fraction: statusTotal / total,

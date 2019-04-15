@@ -1,4 +1,5 @@
 import filesize from 'filesize';
+import HttpStatusCodes from 'http-status-codes';
 
 export class TextService {
 
@@ -18,6 +19,15 @@ export class TextService {
             round: round,
         };
         return filesize(n, options);
+    }
+
+    getHttpStatusText(status: string): string {
+        try {
+            const statusText = HttpStatusCodes.getStatusText(Number(status));
+            return `${status} ${statusText}`;
+        } catch (e) {
+            return status;
+        }
     }
 
 }
