@@ -38,7 +38,7 @@ export default class Dashboard extends Vue {
 
     data: RangeData[] = [];
     rangeData: RangeData[] = [];
-    selectedRangeData: RangeData;
+    selectedRangeData: RangeData = null;
 
     private apiService = new ApiService();
     private timeoutID: number;
@@ -68,7 +68,7 @@ export default class Dashboard extends Vue {
     }
 
     selectData(index: number): void {
-        if (index && index >= 0 && index < this.rangeData.length) {
+        if (index != null && index != undefined && index >= 0 && index < this.rangeData.length) {
             this.selectedRangeData = this.rangeData[index];
         } else {
             this.selectedRangeData = null;
