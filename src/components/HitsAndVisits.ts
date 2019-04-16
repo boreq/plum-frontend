@@ -3,8 +3,9 @@ import { RangeData } from '@/dto/Data';
 import { ChartColors } from '@/dto/ChartColors';
 import { DataService } from '@/services/DataService';
 import { TextService } from '@/services/TextService';
+import { GroupingType } from '@/dto/GroupingType';
+import { ChartAnimation } from '@/dto/ChartAnimation';
 import Chart from 'chart.js';
-import { GroupingType } from '../dto/GroupingType';
 
 class ChartData {
     label: string;
@@ -24,6 +25,7 @@ export default class HitsAndVisits extends Vue {
     private chart: Chart;
 
     private textService = new TextService();
+    private dataService = new DataService();
 
     @Watch('data')
     onRangeDataChanged(value: RangeData[], oldValue: RangeData[]) {
@@ -39,17 +41,14 @@ export default class HitsAndVisits extends Vue {
             return;
         }
 
-        const dataService = new DataService();
-
-        const chartData: ChartData[] = [];
-        for (const rangeData of this.data) {
-            chartData.push({
-                label: this.textService.formatDate(rangeData.time, this.groupingType),
-                hits: dataService.getHits(rangeData.data),
-                visits: dataService.getVisits(rangeData.data),
+        const chartData: ChartData[] = this.data
+            .map(rangeData => {
+                return {
+                    label: this.textService.formatDate(rangeData.time, this.groupingType),
+                    hits: this.dataService.getHits(rangeData.data),
+                    visits: this.dataService.getVisits(rangeData.data),
+                };
             });
-        }
-
         this.drawChart(chartData);
     }
 
@@ -67,17 +66,33 @@ export default class HitsAndVisits extends Vue {
             this.chart.data.labels.push(label);
         }
 
-        this.chart.data.datasets[0].data.length = 0;
-        for (const visit of visits) {
-            this.chart.data.datasets[0].data.push(visit);
-        }
+        // Update with zeroes
+        this.chart.data.datasets[0].data.length = visits.length;
+        visits.forEach((value, index) => {
+            if (!this.chart.data.datasets[0].data[index]) {
+                this.chart.data.datasets[0].data[index] = 0;
+            }
+        });
 
-        this.chart.data.datasets[1].data.length = 0;
-        for (const hit of hits) {
-            this.chart.data.datasets[1].data.push(hit);
-        }
+        this.chart.data.datasets[1].data.length = hits.length;
+        hits.forEach((value, index) => {
+            if (!this.chart.data.datasets[1].data[index]) {
+                this.chart.data.datasets[1].data[index] = 0;
+            }
+        });
 
         this.chart.update({duration: 0});
+
+        // Update with real values and animate
+        visits.forEach((value, index) => {
+            this.chart.data.datasets[0].data[index] = value;
+        });
+
+        hits.forEach((value, index) => {
+            this.chart.data.datasets[1].data[index] = value;
+        });
+
+        this.chart.update({duration: ChartAnimation.Duration});
     }
 
     private createChart(): Chart {

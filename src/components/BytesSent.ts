@@ -1,6 +1,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { RangeData } from '@/dto/Data';
-import { TableHeader, TableRow, Align } from '@/dto/Table';
+import { Align, TableHeader, TableRow } from '@/dto/Table';
 import { TextService } from '@/services/TextService';
 import Table from '@/components/Table.vue';
 
@@ -42,23 +42,33 @@ export default class BytesSent extends Vue {
         if (!this.data) {
             return [];
         }
-        const rows: BytesSentData[] = [];
-        for (const rangeData of this.data) {
-            if (rangeData.data.uris) {
-                Object.entries(rangeData.data.uris).forEach(([uri, uriData]) => {
-                    let row = rows.find(v => v.uri === uri);
-                    if (!row) {
-                        row = {
-                            uri: uri,
-                            bytes: 0,
-                        };
-                        rows.push(row);
-                    }
-                    row.bytes += uriData.bytes;
-                });
-            }
+        return this.toTableRows(this.groupBytesSentByUri(this.data));
+    }
+
+    private groupBytesSentByUri(data: RangeData[]): BytesSentData[] {
+        return data
+            .reduce<BytesSentData[]>((acc, rangeData) => {
+                if (rangeData.data.uris) {
+                    Object.entries(rangeData.data.uris)
+                        .forEach(([uri, uriData]) => {
+                            const row = this.findOrCreateRow(acc, uri);
+                            row.bytes += uriData.bytes;
+                        });
+                }
+                return acc;
+            }, []);
+    }
+
+    private findOrCreateRow(acc: BytesSentData[], uri: string): BytesSentData {
+        let row = acc.find(v => v.uri === uri);
+        if (!row) {
+            row = {
+                uri: uri,
+                bytes: 0,
+            };
+            acc.push(row);
         }
-        return this.toTableRows(rows);
+        return row;
     }
 
     private toTableRows(bytesSentData: BytesSentData[]): TableRow[] {
@@ -71,7 +81,7 @@ export default class BytesSent extends Vue {
                         v.uri,
                         this.textService.humanizeBytes(v.bytes),
                     ],
-                    fraction: v.bytes / total,
+                    fraction: total ? v.bytes / total : 0,
                 };
             });
     }

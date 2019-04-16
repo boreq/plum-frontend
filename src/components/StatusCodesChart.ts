@@ -3,8 +3,9 @@ import { Dictionary, RangeData } from '@/dto/Data';
 import { ChartColors } from '@/dto/ChartColors';
 import { DataService } from '@/services/DataService';
 import { TextService } from '@/services/TextService';
+import { GroupingType } from '@/dto/GroupingType';
+import { ChartAnimation } from '@/dto/ChartAnimation';
 import Chart from 'chart.js';
-import { GroupingType } from '../dto/GroupingType';
 
 class ChartData {
     label: string;
@@ -61,23 +62,42 @@ export default class StatusCodesChart extends Vue {
             this.chart.data.labels.push(label);
         }
 
-        for (let i = 0; i < this.chart.data.datasets.length; i++) {
-            this.chart.data.datasets[i].data.length = 0;
-            for (const statusData of statuses) {
+        // Prepare data
+        const statusDatas: number[][] = [];
+        for (let datasetIndex = 0; datasetIndex < this.chart.data.datasets.length; datasetIndex++) {
+            statusDatas.push([]);
+            statuses.forEach((statusData, statusIndex) => {
                 const total = statusData.reduce((acc, [status, hits]) => {
                     return acc + hits;
                 }, 0);
-                const statusString = this.toStatusString((i + 1).toString());
+                const statusString = this.toStatusString((datasetIndex + 1).toString());
                 const element = statusData.find(v => v[0] === statusString);
                 if (element) {
-                    this.chart.data.datasets[i].data.push(element[1] / total);
+                    statusDatas[datasetIndex][statusIndex] = element[1] / total;
                 } else {
-                    this.chart.data.datasets[i].data.push(0);
+                    statusDatas[datasetIndex][statusIndex] = 0;
+                }
+            });
+        }
+
+        // Update with zeroes
+        for (let datasetIndex = 0; datasetIndex < this.chart.data.datasets.length; datasetIndex++) {
+            this.chart.data.datasets[datasetIndex].data.length = statusDatas[datasetIndex].length;
+            for (let dataIndex = 0; dataIndex < status.length; dataIndex++) {
+                if (!this.chart.data.datasets[datasetIndex].data[dataIndex]) {
+                    this.chart.data.datasets[datasetIndex].data[dataIndex] = 0;
                 }
             }
         }
-
         this.chart.update({duration: 0});
+
+        // Update with real values and animate
+        for (let datasetIndex = 0; datasetIndex < this.chart.data.datasets.length; datasetIndex++) {
+            statusDatas[datasetIndex].forEach((value, statusIndex) => {
+                this.chart.data.datasets[datasetIndex].data[statusIndex] = value;
+            });
+        }
+        this.chart.update({duration: ChartAnimation.Duration});
     }
 
     private groupByStatusType(chartData: ChartData): Array<[string, number]> {

@@ -68,7 +68,7 @@ export default class Dashboard extends Vue {
     }
 
     selectData(index: number): void {
-        if (index != null && index != undefined && index >= 0 && index < this.rangeData.length) {
+        if (index !== null && index !== undefined && index >= 0 && index < this.rangeData.length) {
             this.selectedRangeData = this.rangeData[index];
         } else {
             this.selectedRangeData = null;

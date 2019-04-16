@@ -3,8 +3,9 @@ import { RangeData } from '@/dto/Data';
 import { ChartColors } from '@/dto/ChartColors';
 import { DataService } from '@/services/DataService';
 import { TextService } from '@/services/TextService';
+import { GroupingType } from '@/dto/GroupingType';
+import { ChartAnimation } from '@/dto/ChartAnimation';
 import Chart from 'chart.js';
-import { GroupingType } from '../dto/GroupingType';
 
 class ChartData {
     label: string;
@@ -39,14 +40,13 @@ export default class HitsAndVisits extends Vue {
             return;
         }
 
-        const chartData: ChartData[] = [];
-        for (const rangeData of this.data) {
-            chartData.push({
-                label: this.textService.formatDate(rangeData.time, this.groupingType),
-                bytes: this.dataService.getBytesSent(rangeData.data),
+        const chartData: ChartData[] = this.data
+            .map(rangeData => {
+                return {
+                    label: this.textService.formatDate(rangeData.time, this.groupingType),
+                    bytes: this.dataService.getBytesSent(rangeData.data),
+                };
             });
-        }
-
         this.drawChart(chartData);
     }
 
@@ -63,12 +63,20 @@ export default class HitsAndVisits extends Vue {
             this.chart.data.labels.push(label);
         }
 
-        this.chart.data.datasets[0].data.length = 0;
-        for (const b of bytes) {
-            this.chart.data.datasets[0].data.push(b);
-        }
-
+        // Update with zeroes
+        this.chart.data.datasets[0].data.length = bytes.length;
+        bytes.forEach((value, i) => {
+            if (!this.chart.data.datasets[0].data[i]) {
+                this.chart.data.datasets[0].data[i] = 0;
+            }
+        });
         this.chart.update({duration: 0});
+
+        // Update with real values and animate
+        bytes.forEach((value, i) => {
+            this.chart.data.datasets[0].data[i] = value;
+        });
+        this.chart.update({duration: ChartAnimation.Duration});
     }
 
     private createChart(): Chart {
@@ -77,7 +85,7 @@ export default class HitsAndVisits extends Vue {
             data: {
                 labels: ['a'],
                 datasets: [
-                    this.createDataset('Bytes sent', ChartColors.Primary, [1]),
+                    this.createDataset('Bytes sent', ChartColors.Primary),
                 ],
             },
             options: {
@@ -112,7 +120,7 @@ export default class HitsAndVisits extends Vue {
                     mode: 'index',
                     callbacks: {
                         label: (tooltipItem, data) => {
-                            return this.textService.humanizeBytes((tooltipItem as any).yLabel);
+                            return this.textService.humanizeBytes(parseFloat(tooltipItem.yLabel));
                         },
                     },
                 },
@@ -125,14 +133,15 @@ export default class HitsAndVisits extends Vue {
         });
     }
 
-    private createDataset(label: string, color: string, data: number[]) {
+    private createDataset(label: string, color: string) {
         return {
             label: label,
-            data: data,
+            data: [],
             backgroundColor: 'rgba(0, 0, 0, 0)',
             pointBackgroundColor: color,
             borderColor: color,
             borderWidth: 2,
         };
     }
+
 }
