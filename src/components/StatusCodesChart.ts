@@ -135,7 +135,8 @@ export default class StatusCodesChart extends Vue {
                     }],
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true,
+                            min: 0,
+                            max: 1,
                             maxTicksLimit: 5,
                             callback: (value, index, values) => {
                                 return Math.round(parseFloat(value) * 100) + '%';
