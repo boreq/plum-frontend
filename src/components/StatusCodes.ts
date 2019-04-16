@@ -110,7 +110,7 @@ export default class StatusCodes extends Vue {
                 acc.push({
                     data: [
                         this.textService.getHttpStatusText(v.status),
-                        statusTotal.toString(),
+                        this.textService.humanizeNumber(statusTotal),
                     ],
                     fraction: statusTotal / total,
                 });
