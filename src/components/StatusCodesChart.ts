@@ -132,11 +132,11 @@ export default class StatusCodesChart extends Vue {
             data: {
                 labels: ['a'],
                 datasets: [
-                    this.createDataset('1xx', ChartColors.Blue, [1]),
-                    this.createDataset('2xx', ChartColors.Green, [2]),
-                    this.createDataset('3xx', ChartColors.Violet, [3]),
-                    this.createDataset('4xx', ChartColors.Orange, [4]),
-                    this.createDataset('5xx', ChartColors.Red, [5]),
+                    this.createDataset('1xx', ChartColors.Blue),
+                    this.createDataset('2xx', ChartColors.Green),
+                    this.createDataset('3xx', ChartColors.Violet),
+                    this.createDataset('4xx', ChartColors.Orange),
+                    this.createDataset('5xx', ChartColors.Red),
                 ],
             },
             options: {
@@ -187,10 +187,10 @@ export default class StatusCodesChart extends Vue {
         });
     }
 
-    private createDataset(label: string, color: string, data: number[]) {
+    private createDataset(label: string, color: string) {
         return {
             label: label,
-            data: data,
+            data: [],
             backgroundColor: color,
             pointBackgroundColor: color,
             borderColor: color,

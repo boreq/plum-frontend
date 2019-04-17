@@ -101,8 +101,8 @@ export default class HitsAndVisits extends Vue {
             data: {
                 labels: ['a'],
                 datasets: [
-                    this.createDataset('Visits', ChartColors.Primary, [1]),
-                    this.createDataset('Hits', ChartColors.Secondary, [2]),
+                    this.createDataset('Visits', ChartColors.Primary),
+                    this.createDataset('Hits', ChartColors.Secondary),
                 ],
             },
             options: {
@@ -148,10 +148,10 @@ export default class HitsAndVisits extends Vue {
         });
     }
 
-    private createDataset(label: string, color: string, data: number[]) {
+    private createDataset(label: string, color: string) {
         return {
             label: label,
-            data: data,
+            data: [],
             backgroundColor: color,
             borderColor: color,
             borderWidth: 1,
