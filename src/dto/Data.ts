@@ -10,6 +10,7 @@ export class RangeData {
 export class Data {
     referers: Dictionary<RefererData>;
     uris: Dictionary<UriData>;
+    visits: number;
 }
 
 export class RefererData {

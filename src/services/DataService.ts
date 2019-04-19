@@ -17,13 +17,7 @@ export class DataService {
     }
 
     getVisits(data: Data): number {
-        let sum = 0;
-        if (data.uris) {
-            Object.entries(data.uris).forEach(([uri, uriData]) => {
-                sum += uriData.visits;
-            });
-        }
-        return sum;
+        return data.visits;
     }
 
     getBytesSent(data: Data): number {
