@@ -8,6 +8,7 @@ export class UriService {
         '.png',
         '.jpg',
         '.jpeg',
+        '.svg',
 
         '.webm',
 
@@ -20,15 +21,21 @@ export class UriService {
         '.ttf',
         '.woff',
         '.woff2',
+        '.eot',
     ];
 
     isStaticResource(uri: string): boolean {
         for (const staticResourceExtension of this.staticResourceExtensions) {
-            if (uri.endsWith(staticResourceExtension)) {
+            const cleanedUpUri = this.removeQueryFromUri(uri);
+            if (cleanedUpUri.endsWith(staticResourceExtension)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private removeQueryFromUri(uri: string): string {
+        return uri.split('?')[0];
     }
 
 }
