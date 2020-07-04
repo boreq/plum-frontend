@@ -33,6 +33,17 @@
               </ul>
           </div>
 
+          <div class="box box-dimmed">
+              <ul>
+                  <li v-for="website of websites">
+                      <a v-bind:class="{ active: website === selectedWebsite }"
+                         v-on:click="selectWebsite(website)">
+                          {{ website }}
+                      </a>
+                  </li>
+              </ul>
+          </div>
+
           <div class="box box-dimmed" v-if="selectedRangeData">
               <a title="Click to cancel." v-on:click="selectData(null)">You are inspecting a single data point.</a>
           </div>

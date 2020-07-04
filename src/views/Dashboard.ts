@@ -36,6 +36,9 @@ export default class Dashboard extends Vue {
     updating: boolean = false;
     updatingLatest: boolean = false;
 
+    websites: string[] = [];
+    selectedWebsite: string = '';
+
     data: RangeData[] = [];
     rangeData: RangeData[] = [];
     selectedRangeData: RangeData = null;
@@ -45,7 +48,7 @@ export default class Dashboard extends Vue {
 
 
     created(): void {
-        this.reloadData();
+        this.loadWebsites();
     }
 
     beforeDestroy(): void {
@@ -81,6 +84,13 @@ export default class Dashboard extends Vue {
             .some(v => v === groupingType);
     }
 
+    selectWebsite(website: string): void {
+        this.selectedWebsite = website;
+        if (!this.updating) {
+            this.reloadData();
+        }
+    }
+
     private selectAppropriateGroupingType(timePeriod: TimePeriod): void {
         switch (this.selectedTimePeriod) {
             case TimePeriod.Day:
@@ -100,22 +110,35 @@ export default class Dashboard extends Vue {
         }
     }
 
+    private loadWebsites(): void {
+        this.updating = true;
+        this.apiService.getWebsites()
+            .then(response => {
+                this.websites = response.data;
+                if (this.websites && this.websites.length > 0) {
+                    this.selectedWebsite = this.websites[0];
+                    this.reloadData();
+                }
+            });
+    }
+
     private reloadData(): void {
         this.updating = true;
         const timePeriod = this.selectedTimePeriod;
         const groupingType = this.selectedGroupingType;
-        this.apiService.getTimeRange(timePeriod, groupingType)
+        const selectedWebsite = this.selectedWebsite;
+        this.apiService.getTimeRange(selectedWebsite, timePeriod, groupingType)
             .then(response => {
                 this.updating = false;
                 this.rangeData = response.data;
                 this.updateSelectedData();
-                this.scheduleReload(timePeriod, groupingType);
+                this.scheduleReload(selectedWebsite, timePeriod, groupingType);
             });
     }
 
-    private scheduleReload(timePeriod: TimePeriod, groupingType: GroupingType): void {
+    private scheduleReload(selectedWebsite: string, timePeriod: TimePeriod, groupingType: GroupingType): void {
         this.cancelReload();
-        this.timeoutID = setTimeout(() => this.reloadLatestData(timePeriod, groupingType), 5000);
+        this.timeoutID = setTimeout(() => this.reloadLatestData(selectedWebsite, timePeriod, groupingType), 5000);
     }
 
     private cancelReload(): void {
@@ -124,19 +147,19 @@ export default class Dashboard extends Vue {
         }
     }
 
-    private reloadLatestData(timePeriod: TimePeriod, groupingType: GroupingType): void {
+    private reloadLatestData(selectedWebsite: string, timePeriod: TimePeriod, groupingType: GroupingType): void {
         this.updatingLatest = true;
-        this.apiService.getTimePoint(timePeriod, groupingType)
+        this.apiService.getTimePoint(selectedWebsite, timePeriod, groupingType)
             .then(response => {
                 this.updatingLatest = false;
-                if (timePeriod === this.selectedTimePeriod && groupingType === this.selectedGroupingType) {
+                if (selectedWebsite === this.selectedWebsite && timePeriod === this.selectedTimePeriod && groupingType === this.selectedGroupingType) {
                     this.updateLatestData(response.data);
-                    this.scheduleReload(timePeriod, groupingType);
+                    this.scheduleReload(selectedWebsite, timePeriod, groupingType);
                 }
             })
             .catch(error => {
                 this.updatingLatest = false;
-                this.scheduleReload(timePeriod, groupingType);
+                this.scheduleReload(selectedWebsite, timePeriod, groupingType);
             });
     }
 
