@@ -116,8 +116,6 @@ export default class HitsAndVisits extends Vue {
                             display: false,
                         },
                         stacked: true,
-                        barPercentage: 1,
-                        categoryPercentage: 0.9,
                     }],
                     yAxes: [{
                         ticks: {
@@ -155,6 +153,8 @@ export default class HitsAndVisits extends Vue {
             backgroundColor: color,
             borderColor: color,
             borderWidth: 1,
+            barPercentage: 1,
+            categoryPercentage: 0.9,
         };
     }
 }

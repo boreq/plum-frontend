@@ -150,8 +150,6 @@ export default class StatusCodesChart extends Vue {
                             display: false,
                         },
                         stacked: true,
-                        barPercentage: 1,
-                        categoryPercentage: 0.9,
                     }],
                     yAxes: [{
                         ticks: {
@@ -195,6 +193,8 @@ export default class StatusCodesChart extends Vue {
             pointBackgroundColor: color,
             borderColor: color,
             borderWidth: 2,
+            barPercentage: 1,
+            categoryPercentage: 0.9,
         };
     }
 }
