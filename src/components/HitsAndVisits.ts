@@ -121,9 +121,9 @@ export default class HitsAndVisits extends Vue {
                         ticks: {
                             beginAtZero: true,
                             maxTicksLimit: 5,
-                            callback: (value, index, values) => {
-                                if (value >= 10000) {
-                                    return value / 1000 + 'k';
+                            callback: (value , index, values) => {
+                                if (value as number >= 10000) {
+                                    return value as number / 1000 + 'k';
                                 }
                                 return value;
                             },

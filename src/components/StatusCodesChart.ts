@@ -157,7 +157,7 @@ export default class StatusCodesChart extends Vue {
                             max: 1,
                             maxTicksLimit: 5,
                             callback: (value, index, values) => {
-                                return Math.round(parseFloat(value) * 100) + '%';
+                                return Math.round(value as number * 100) + '%';
                             },
                         },
                         stacked: true,
@@ -171,7 +171,7 @@ export default class StatusCodesChart extends Vue {
                     callbacks: {
                         label: (tooltipItem, data) => {
                             const label = data.datasets[tooltipItem.datasetIndex].label;
-                            const percent = Math.round(parseFloat(tooltipItem.yLabel) * 100);
+                            const percent = Math.round(tooltipItem.yLabel as number * 100);
                             return `${label}: ${percent}%`;
                         },
                     },

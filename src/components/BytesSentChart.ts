@@ -105,7 +105,7 @@ export default class HitsAndVisits extends Vue {
                             beginAtZero: true,
                             maxTicksLimit: 5,
                             callback: (value, index, values) => {
-                                return this.textService.humanizeBytes(value);
+                                return this.textService.humanizeBytes(value as number);
                             },
                         },
                         stacked: false,
@@ -118,7 +118,7 @@ export default class HitsAndVisits extends Vue {
                     mode: 'index',
                     callbacks: {
                         label: (tooltipItem, data) => {
-                            return this.textService.humanizeBytes(parseFloat(tooltipItem.yLabel));
+                            return this.textService.humanizeBytes(tooltipItem.yLabel as number);
                         },
                     },
                 },
